@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Ghost Net Fishing Web-App</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+</h:head>
+<h:body>
+	<h1>Ghost Net Fishing Web-App</h1>
+	<h:form>
+		<p:card style="width: 80em">
+			<f:facet name="title">Geisternetz als verschollen melden</f:facet>
+	<p:dataTable var="geisternetz" value="#{geisternetzController.geisternetz}">
+			<f:facet name="header">
+				<h4>Geisternetz</h4>
+			</f:facet>
+			<p:column headerText="Standort">
+				<p:outputLabel value="#{geisternetz.standort}" />
+			</p:column>
+			<p:column headerText="Größe">
+				<p:outputLabel value="#{geisternetz.groesse}" />
+			</p:column>
+			<p:column headerText="Status">
+				<p:outputLabel value="#{geisternetz.status}" />
+				</p:column>
+		</p:dataTable>
+			<p:panelGrid>
+				<f:facet name="header">
+				<h4>Angaben zur Person</h4>
+			</f:facet>
+						<p:row>
+					<p:outputLabel value="Name: " for="name" />
+					<p:inputText id="name" value="#{loginController.neuePerson.name}"  required="true" requiredMessage="Bitte geben Sie einen Namen an." >
+				 <f:validator validatorId="NameRegexValidator" />
+				</p:inputText> <br/>
+				<h:message for="name" />
+				</p:row>
+				<br/>
+					<p:row>
+					<p:outputLabel value="Handynummer für Rückfragen: " for="telefonnummer" />
+					<p:inputMask id="telefonnummer" value="#{loginController.neuePerson.telefonnummer}" mask="+(99) 999-999999999" validateMask="true" required="true" requiredMessage="Bitte geben Sie eine Handynummer für Rückfragen an." />
+				<h:message for="telefonnummer" />
+				</p:row>
+				<br/>
+			</p:panelGrid>
+
+			<f:facet name="footer">
+			<h5>Möchten Sie das Geisternetz unwiderruflich als verschollen melden?</h5>
+		<p:commandButton value="bestätigen"  icon="pi pi-check" action="#{geisternetzController.stopAlsVerschollenMelden}" />
+		<p:commandButton value="abbrechen" icon="pi pi-times" process="@this" action="#{geisternetzController.abbrechen}" />
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+			</f:facet>
+<br/>
+*Pflichtfeld
+		</p:card>
+	</h:form>
+</h:body>
+</html>

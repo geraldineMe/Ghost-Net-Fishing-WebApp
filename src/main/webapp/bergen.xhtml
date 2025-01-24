@@ -1,0 +1,36 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Ghost Net Fishing Web-App</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+</h:head>
+<h:body>
+	<h1>Ghost Net Fishing Web-App</h1>
+	<h:form>
+		<p:dataTable var="geisternetz" value="#{geisternetzController.geisternetz}">
+			<f:facet name="header">
+				<h2>Geisternetz bergen</h2>
+			</f:facet>
+			<p:column headerText="Standort">
+				<p:outputLabel value="#{geisternetz.standort}" />
+			</p:column>
+			<p:column headerText="Größe">
+				<p:outputLabel value="#{geisternetz.groesse}" />
+			</p:column>
+			<p:column headerText="Status">
+				<p:outputLabel value="#{geisternetz.status}" />
+				</p:column>	
+			<p:column headerText="Bergende Person">
+				<p:outputLabel  value="#{loginController.eingeloggterUser.name}" /><br/>
+				<p:outputLabel  value="#{loginController.eingeloggterUser.telefonnummer}"/>
+			</p:column>	
+		</p:dataTable>
+		<h5>Möchten Sie sich zur Bergung dieses Geisternetzes eintragen?</h5>
+		<p:commandButton value="bestätigen" icon="pi pi-check" action="#{geisternetzController.stopZurBergungEintragen}" />
+		<p:commandButton value="abbrechen" process="@this" icon="pi pi-times" action="#{geisternetzController.abbrechen}" />
+	</h:form>
+</h:body>
+</html>

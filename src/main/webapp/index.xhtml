@@ -1,0 +1,62 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Ghost Net Fishing Web-App</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+</h:head>
+<h:body>
+	<h1>Ghost Net Fishing Web-App</h1>
+	<h:form>
+	<p:commandButton rendered="#{loginController.eingeloggterUser==null}" icon="pi pi-sign-in" style="margin-left:90%;" value="Anmelden" action="#{loginController.einloggen()}" />
+	<p:commandButton  rendered="#{loginController.eingeloggterUser!=null}" icon="pi pi-sign-out" style="margin-left:90%;" value="Abmelden" action="#{loginController.ausloggen()}" update="@form" />
+	<p:commandLink  rendered="#{loginController.eingeloggterUser!=null}" style="margin-left:90%;" value="User: #{loginController.eingeloggterUser.username}"  update="@form" />
+		<p:dataTable id="dataTable" var="geisternetz" value="#{geisternetzListing.liste}" rowStyleClass="#{geisternetzController.getStatusColor(geisternetz)}">
+			<f:facet name="header">
+				<h2>Übersicht über die gemeldeten Geisternetze
+					<p:commandButton value="Geisternetz melden" icon="pi pi-plus" action="#{geisternetzController.startGeisternetzMelden}" />
+				</h2>
+			</f:facet>
+			<p:column headerText="Standort">
+				<p:outputLabel value="#{geisternetz.standort}" />
+			</p:column>
+			<p:column headerText="Größe (in m²)">
+				<p:outputLabel value="#{geisternetz.groesse}" />
+			</p:column>
+			<p:column headerText="Status">
+				<p:outputLabel value="#{geisternetz.status}" />
+			</p:column>		
+			<p:column headerText="">
+				<p:commandButton rendered="#{geisternetz.status == 'gemeldet'}" value="Geisternetz bergen" action="#{geisternetzController.startZurBergungEintragen(geisternetz)}" />
+				 <p:commandButton type="button" rendered="#{geisternetz.status != 'gemeldet'}" value="Geisternetz bergen" disabled="true" />
+			</p:column>	
+				<p:column headerText="">
+				<p:commandButton  rendered="#{geisternetz.status != 'verschollen' and geisternetz.status != 'geborgen'}" value="Als verschollen melden" action="#{geisternetzController.startAlsVerschollenMelden(geisternetz)}" />
+				 <p:commandButton type="button" rendered="#{geisternetz.status == 'verschollen'}" value="Als verschollen melden" disabled="true" />
+			</p:column>	
+		</p:dataTable>
+		
+		<p:dataTable rendered="#{loginController.eingeloggterUser!=null}" var="geisternetz" value="#{loginController.eingeloggterUser.zuBergendeGeisternetze}">
+			<f:facet name="header">
+				<h2>Du hast Dich für die Bergung folgender Geisternetze eingetragen:</h2>
+			</f:facet>
+			<p:column headerText="Standort">
+				<p:outputLabel value="#{geisternetz.standort}" />
+			</p:column>
+			<p:column headerText="Größe">
+				<p:outputLabel value="#{geisternetz.groesse}" />
+			</p:column>
+			<p:column headerText="Status">
+				<p:outputLabel id="status" value="#{geisternetz.status}" />
+			</p:column>	
+				<p:column headerText="">
+				<p:commandButton id="button" rendered="#{geisternetz.status !='geborgen'}" value="Geisternetz geborgen" action="#{geisternetzController.geisternetzGeborgen(geisternetz)}" update="@form">
+				   <f:ajax execute="@form" render="status" />
+				</p:commandButton>
+				</p:column>				
+		</p:dataTable>
+	</h:form>
+</h:body>
+</html>

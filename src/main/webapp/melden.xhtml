@@ -1,0 +1,45 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Ghost Net Fishing Web-App</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+</h:head>
+<h:body>
+	<h1>Ghost Net Fishing Web-App</h1>
+	<h:form>
+		<p:dataTable var="geisternetz" value="#{geisternetzListing.neuesGeisternetz}">
+			<f:facet name="header">
+				<h2>Geisternetz melden</h2>
+			</f:facet>
+			<p:column headerText="Standort*">
+				<p:inputText value="#{geisternetz.standort.breitengrad}" required="true" 
+                            requiredMessage="Bitte geben Sie einen gültigen Breitengrad im Dezimalformat an." converter="doubleConverter" validator="#{geisternetzController.validateGPSBreitengrad}">
+				</p:inputText> ° Breitengrad**<br/> 
+				<p:inputText value="#{geisternetz.standort.laengengrad}" required="true" 
+                  requiredMessage="Bitte geben Sie einen gültigen Längengrad im Dezimalformat an." converter="doubleConverter" validator="#{geisternetzController.validateGPSLaengengrad}">
+				</p:inputText> ° Längengrad**
+			</p:column>
+			<p:column headerText="Größe*">
+			<p:spinner id="groesse" value="#{geisternetz.groesse}" min="1" max="20000" stepFactor="10"/> m²
+			</p:column>
+			<p:column headerText="Meldende Person">
+				<p:inputText id="name" value="#{geisternetz.meldenePerson.name}" placeholder="Name*" required="true" requiredMessage="Bitte geben Sie einen Namen an." >
+				 <f:validator validatorId="NameRegexValidator" />
+				</p:inputText> <br/>
+				<h:message for="name" />
+				<p:inputMask id="phone" value="#{geisternetz.meldenePerson.telefonnummer}" mask="+(99) 999-99999999" validateMask="true" placeholder="Handynummer(optional)"/>
+			</p:column>	
+		</p:dataTable>
+		<p:messages id="messages">
+			<p:autoUpdate />
+		</p:messages>
+		<p:commandButton value="Geisternetz melden" action="#{geisternetzController.stopGeisternetzMelden}" />
+		<p:commandButton value="abbrechen" process="@this" action="#{geisternetzController.abbrechen}" /><br/>
+			*Pflichtfeld<br/>
+		**Angabe als Dezimalgrad mit mindestens 5 Nachkommastellen (z.B. 52.12525°)<br/>
+	</h:form>
+</h:body>
+</html>

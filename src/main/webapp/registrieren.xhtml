@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>Ghost Net Fishing Web-App</title>
+	<link rel="stylesheet" type="text/css" media="screen" href="styles.css" />
+</h:head>
+<h:body>
+	<h1>Ghost Net Fishing Web-App</h1>
+	<h:form>
+		<p:card style="width: 60em">
+			<f:facet name="title">Registrierung als bergende Person</f:facet>
+			<p:panelGrid>
+						<p:row>
+					<p:outputLabel value="Name: " for="name" />
+					<p:inputText id="name" value="#{loginController.bergendePerson.name}" required="true" requiredMessage="Bitte geben Sie einen Namen an." >
+				 <f:validator validatorId="NameRegexValidator" />
+				 <f:event type="jakarta.faces.event.PostValidateEvent"
+							listener="#{loginController.postValidateNewUserName}" />
+				</p:inputText> <br/>
+				<h:message for="name" />	
+				</p:row>
+				<br/>
+					<p:row>
+					<p:outputLabel value="Handynummer für Rückfragen: " for="telefonnummer" />
+					<p:inputMask id="telefonnummer" value="#{loginController.bergendePerson.telefonnummer}" mask="+(99) 999-99999999" validateMask="true" validator="#{loginController.validateNewUser}" required="true" requiredMessage="Bitte geben Sie eine Handynummer für Rückfragen an.">
+					</p:inputMask>
+				</p:row>
+				<br/>
+				<p:row>
+					<p:outputLabel value="Benutzername: " for="username" />
+					<p:inputText id="username" value="#{loginController.bergendePerson.username}"  validator="#{loginController.validateNewUserUsername}" required="true" requiredMessage="Bitte geben Sie einen Benutzername ein.">
+						<f:validator validatorId="UsernameRegexValidator" />
+					</p:inputText>
+				</p:row>
+				<br/>
+				<p:row>
+					<p:outputLabel value="Passwort: " for="pass1" />
+					<p:password id="pass1" value="#{loginController.bergendePerson.passwort}"
+						required="true" requiredMessage="Bitte geben Sie ein Passwort ein." toggleMask="true" redisplay="true" >
+							<f:validator validatorId="PasswortRegexValidator"/>
+								<f:event type="jakarta.faces.event.PostValidateEvent"
+							listener="#{loginController.postValidateNewUserPasswort}" />
+						</p:password>
+				</p:row>
+					<br/>
+					<p:row>
+					<p:outputLabel value="Passwort wiederholen: " for="pass2" />
+					<p:password id="pass2" value="#{loginController.bergendePerson.passwort}" validator="#{loginController.validatePassword}"
+						required="true" requiredMessage="Bitte geben Sie das Passwort wiederholt ein." toggleMask="true" redisplay="true" >
+							<f:validator validatorId="PasswortRegexValidator"/>
+						</p:password>
+				</p:row>
+			</p:panelGrid>
+
+			<f:facet name="footer">
+				<p:commandButton value="Registrieren" action="#{loginController.registrieren}" />
+				<p:commandButton value="abbrechen" process="@this" action="#{geisternetzController.abbrechen}" />
+				<p:messages>
+					<p:autoUpdate />
+				</p:messages>
+			</f:facet>
+
+		</p:card>
+	</h:form>
+
+</h:body>
+</html>
